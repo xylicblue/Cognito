@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-// V6 CHANGE: Import signUp and confirmSignUp
 import { signUp, confirmSignUp } from "aws-amplify/auth";
-import "./login.css"; // Reusing the login page styles
+import "./login.css"; // Import the new, shared stylesheet
 
 const SignUpPage = () => {
+  // All your existing state and logic remains the same...
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmationCode, setConfirmationCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  // This state will control which form we show: sign-up or confirmation
   const [isAwaitingConfirmation, setIsAwaitingConfirmation] = useState(false);
   const navigate = useNavigate();
 
@@ -18,26 +17,14 @@ const SignUpPage = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
       const { nextStep } = await signUp({
-        username: email, // In Cognito, the username is often the email
+        username: email,
         password,
-        options: {
-          userAttributes: {
-            email, // This makes sure the email attribute is also set
-          },
-        },
+        options: { userAttributes: { email } },
       });
-
-      console.log("Sign-up result:", nextStep);
-
-      // Check if the next step is to confirm the sign-up
       if (nextStep.signUpStep === "CONFIRM_SIGN_UP") {
         setIsAwaitingConfirmation(true);
-      } else {
-        // This case is unlikely with default settings but good to handle
-        setError("An unexpected error occurred during sign-up.");
       }
     } catch (err) {
       setError(err.message);
@@ -50,13 +37,8 @@ const SignUpPage = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
-      await confirmSignUp({
-        username: email,
-        confirmationCode,
-      });
-      // On success, redirect the user to the login page to sign in
+      await confirmSignUp({ username: email, confirmationCode });
       alert("Account confirmed successfully! Please sign in.");
       navigate("/");
     } catch (err) {
@@ -67,107 +49,74 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="background-customizable">
+    <div className="auth-container">
+      <h1 className="auth-title">
+        {isAwaitingConfirmation ? "Verify Your Account" : "Create an Account"}
+      </h1>
+
+      {error && <div className="error-message">{error}</div>}
+
       {!isAwaitingConfirmation ? (
-        // === SIGN-UP FORM ===
-        <div>
-          <h2
-            style={{
-              textAlign: "center",
-              marginBottom: "1.5rem",
-              fontSize: "22px",
-            }}
-          >
-            Create an Account
-          </h2>
-          {error && <div className="errorMessage-customizable">{error}</div>}
-          <form onSubmit={handleSignUp}>
-            <div style={{ marginBottom: "1rem" }}>
-              <label htmlFor="email" className="label-customizable">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="inputField-customizable"
-                required
-              />
-            </div>
-            <div style={{ marginBottom: "1rem" }}>
-              <label htmlFor="password" className="label-customizable">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="inputField-customizable"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="submitButton-customizable"
-            >
-              {loading ? "Creating Account..." : "Sign Up"}
-            </button>
-          </form>
-        </div>
+        <form onSubmit={handleSignUp}>
+          <div className="input-group">
+            <label htmlFor="email" className="input-label">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field"
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password" className="input-label">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field"
+              required
+            />
+          </div>
+          <button type="submit" disabled={loading} className="auth-button">
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
       ) : (
-        // === CONFIRMATION FORM ===
-        <div>
-          <h2
-            style={{
-              textAlign: "center",
-              marginBottom: "1.5rem",
-              fontSize: "22px",
-            }}
-          >
-            Verify Your Account
-          </h2>
+        <form onSubmit={handleConfirmation}>
           <p
-            style={{
-              textAlign: "center",
-              marginBottom: "1rem",
-              fontSize: "14px",
-            }}
+            className="redirect-link"
+            style={{ marginTop: 0, marginBottom: "1rem" }}
           >
-            A confirmation code has been sent to <strong>{email}</strong>.
+            A confirmation code was sent to <strong>{email}</strong>.
           </p>
-          {error && <div className="errorMessage-customizable">{error}</div>}
-          <form onSubmit={handleConfirmation}>
-            <div style={{ marginBottom: "1rem" }}>
-              <label htmlFor="confirmationCode" className="label-customizable">
-                Confirmation Code
-              </label>
-              <input
-                id="confirmationCode"
-                type="text"
-                value={confirmationCode}
-                onChange={(e) => setConfirmationCode(e.target.value)}
-                className="inputField-customizable"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="submitButton-customizable"
-            >
-              {loading ? "Verifying..." : "Confirm Account"}
-            </button>
-          </form>
-        </div>
+          <div className="input-group">
+            <label htmlFor="confirmationCode" className="input-label">
+              Confirmation Code
+            </label>
+            <input
+              id="confirmationCode"
+              type="text"
+              value={confirmationCode}
+              onChange={(e) => setConfirmationCode(e.target.value)}
+              className="input-field"
+              required
+            />
+          </div>
+          <button type="submit" disabled={loading} className="auth-button">
+            {loading ? "Verifying..." : "Verify Account"}
+          </button>
+        </form>
       )}
 
-      <div className="redirect-customizable">
-        <Link to="/" style={{ color: "#337ab7", textDecoration: "none" }}>
-          Back to Sign In
-        </Link>
+      <div className="redirect-link">
+        Already have an account? <Link to="/">Sign In</Link>
       </div>
     </div>
   );

@@ -1,75 +1,87 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// V6 CHANGE: Import specific functions
-import { getCurrentUser, fetchUserAttributes, signOut } from "aws-amplify/auth";
-import "./login.css"; // Re-using styles
+import { jwtDecode } from "jwt-decode"; // You'll need to run: npm install jwt-decode
+import "./login.css";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const course = {
+    id: "CS101",
+    name: "Introduction to Web Development",
+    description: "Learn the fundamentals of modern web development.",
+    site: "http://localhost:5174",
+  };
+  const registrationUrl = `${course.site}/register?courseId=${
+    course.id
+  }&courseName=${encodeURIComponent(course.name)}`;
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        // V6 CHANGE: Call 'getCurrentUser' and 'fetchUserAttributes'
-        const currentUser = await getCurrentUser();
-        const attributes = await fetchUserAttributes();
-        setUser({ ...currentUser, attributes });
-      } catch (error) {
-        // If user is not authenticated, they will be redirected
-        navigate("/");
-      }
-    };
-    fetchUserData();
+    const token = localStorage.getItem("id_token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUser(decodedToken);
+    } else {
+      navigate("/");
+    }
   }, [navigate]);
 
-  const handleLogout = async () => {
-    try {
-      // V6 CHANGE: Call 'signOut' function directly
-      await signOut();
-      navigate("/");
-    } catch (error) {
-      console.error("Error signing out: ", error);
-    }
+  const handleLogout = () => {
+    const VITE_COGNITO_DOMAIN = import.meta.env.VITE_COGNITO_DOMAIN;
+    const VITE_COGNITO_CLIENT_ID = import.meta.env.VITE_COGNITO_CLIENT_ID;
+    const VITE_LOGOUT_URI = import.meta.env.VITE_LOGOUT_URI;
+
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("access_token");
+
+    // Redirect to Cognito's logout endpoint to clear the central session
+    window.location.href = `https://${VITE_COGNITO_DOMAIN}/logout?client_id=${VITE_COGNITO_CLIENT_ID}&logout_uri=${VITE_LOGOUT_URI}`;
   };
 
-  if (!user) {
+  // ... rest of the component is the same ...
+  if (!user)
     return (
-      <div className="background-customizable">
+      <div className="auth-container">
         <p>Loading...</p>
       </div>
     );
-  }
-
   return (
-    <div className="background-customizable">
-      <h1
-        style={{
-          textAlign: "center",
-          marginBottom: "1.5rem",
-          fontSize: "22px",
-        }}
-      >
-        Welcome!
-      </h1>
-      <div style={{ marginBottom: "20px", lineHeight: "1.6" }}>
+    <div className="auth-container">
+      <h1 className="dashboard-greeting">Website A Dashboard</h1>
+      <div className="dashboard-info">
         <p>
-          <strong>Username:</strong> {user.username}
-        </p>
-        <p>
-          {/* V6 CHANGE: Access attributes from the combined user object */}
-          <strong>Email:</strong> {user.attributes.email}
-        </p>
-        <p>
-          <strong>User ID (sub):</strong> {user.attributes.sub}
+          <strong>Logged in as:</strong> {user.email}
         </p>
       </div>
+
+      {/* --- Course Display Section --- */}
+      <div className="dashboard-info" style={{ marginTop: "1rem" }}>
+        <h3>Featured Course</h3>
+        <p>
+          <strong>{course.name}</strong>
+        </p>
+        <p>{course.description}</p>
+
+        {/* This is the key link that starts the flow */}
+        <a
+          href={registrationUrl}
+          className="auth-button"
+          style={{
+            marginTop: "1rem",
+            textAlign: "center",
+            textDecoration: "none",
+          }}
+        >
+          Register on Website B
+        </a>
+      </div>
+
       <button
         onClick={handleLogout}
-        className="submitButton-customizable"
-        style={{ backgroundColor: "#d9534f" }}
+        className="auth-button logout-button"
+        style={{ marginTop: "1rem" }}
       >
-        Logout
+        Sign Out
       </button>
     </div>
   );

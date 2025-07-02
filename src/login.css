@@ -1,99 +1,155 @@
-/*
-  This file lives ONLY in your Vite project's src folder.
-  DO NOT UPLOAD THIS FILE TO THE AWS COGNITO CONSOLE.
-*/
-
-/* This is a simple body style to center the form */
+/* General Body & Layout Styles */
 body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f8fafc; /* A very light, clean gray */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
   margin: 0;
-  background-color: #f0f2f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* We use the official customizable class for the form's container */
-.background-customizable {
-  background-color: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+/* The main container for the form card */
+.auth-container {
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   box-sizing: border-box;
 }
 
-.logo-customizable {
-  max-width: 60%;
-  max-height: 30%;
-  display: block;
-  margin: 0 auto 1.5rem;
+/* Page Title (e.g., "Sign In") */
+.auth-title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937; /* Dark gray, not pure black */
+  margin-bottom: 2rem;
 }
 
-.label-customizable {
-  font-weight: 600; /* Bolder for better visibility */
+/* Logo Placeholder */
+.auth-logo {
+  max-width: 150px;
   display: block;
+  margin: 0 auto 2rem;
+}
+
+/* Form Styles */
+.input-group {
+  margin-bottom: 1.25rem;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: #374151;
   margin-bottom: 0.5rem;
-  font-size: 14px;
 }
 
-.inputField-customizable {
+.input-field {
   width: 100%;
-  height: 40px;
-  padding: 0 12px;
-  color: #555;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.inputField-customizable:focus {
-  border-color: #337ab7;
-  outline: 0;
-  box-shadow: 0 0 0 3px rgba(51, 122, 183, 0.2);
+.input-field:focus {
+  border-color: #4f46e5; /* A modern indigo */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
 }
 
-.submitButton-customizable {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 20px 0px 10px 0px;
-  height: 44px;
+/* Button Styles */
+.auth-button {
   width: 100%;
-  color: #fff;
-  background-color: #337ab7;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: #4f46e5;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-.submitButton-customizable:hover {
-  background-color: #286090;
+.auth-button:hover {
+  background-color: #4338ca;
 }
 
-.submitButton-customizable:disabled {
-  background-color: #a0c7e8;
+.auth-button:disabled {
+  background-color: #a5b4fc;
   cursor: not-allowed;
 }
 
-.errorMessage-customizable {
-  padding: 12px;
-  margin-bottom: 1rem;
-  font-size: 14px;
-  width: 100%;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
-  border-radius: 6px;
-  text-align: center;
-  box-sizing: border-box;
+.auth-button:active {
+  transform: scale(0.98);
 }
 
-.redirect-customizable {
+/* Error Message */
+.error-message {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
   text-align: center;
-  margin-top: 1rem;
-  font-size: 14px;
+}
+
+/* Redirect Link (e.g., "Don't have an account?") */
+.redirect-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.redirect-link a {
+  color: #4f46e5;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.redirect-link a:hover {
+  text-decoration: underline;
+  color: #4338ca;
+}
+
+/* Dashboard Specific Styles */
+.dashboard-greeting {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-info {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.dashboard-info p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.logout-button {
+  background-color: #ef4444; /* A nice red */
+}
+
+.logout-button:hover {
+  background-color: #dc2626;
 }

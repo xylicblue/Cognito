@@ -5,17 +5,17 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import LoginPage from "./loginpage.jsx";
-import Dashboard from "./dashboard.jsx";
-import SignUpPage from "./signup.jsx"; // Import the new component
+import LoginPage from "./loginpage";
+import Dashboard from "./dashboard";
+import Callback from "./callback"; // We need this new component
+import "./login.css"; // Use your nice CSS
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        {/* ADD THE NEW SIGN-UP ROUTE */}
-        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/callback" element={<Callback />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
