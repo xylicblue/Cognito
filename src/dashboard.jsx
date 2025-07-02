@@ -11,7 +11,7 @@ const Dashboard = () => {
     id: "CS101",
     name: "Introduction to Web Development",
     description: "Learn the fundamentals of modern web development.",
-    site: "http://localhost:5174",
+    site: "https://cogtest2.netlify.app/",
   };
   const registrationUrl = `${course.site}/register?courseId=${
     course.id
