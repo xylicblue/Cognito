@@ -1,0 +1,99 @@
+/*
+  This file lives ONLY in your Vite project's src folder.
+  DO NOT UPLOAD THIS FILE TO THE AWS COGNITO CONSOLE.
+*/
+
+/* This is a simple body style to center the form */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* We use the official customizable class for the form's container */
+.background-customizable {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+.logo-customizable {
+  max-width: 60%;
+  max-height: 30%;
+  display: block;
+  margin: 0 auto 1.5rem;
+}
+
+.label-customizable {
+  font-weight: 600; /* Bolder for better visibility */
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+}
+
+.inputField-customizable {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  color: #555;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.inputField-customizable:focus {
+  border-color: #337ab7;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(51, 122, 183, 0.2);
+}
+
+.submitButton-customizable {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0px 10px 0px;
+  height: 44px;
+  width: 100%;
+  color: #fff;
+  background-color: #337ab7;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submitButton-customizable:hover {
+  background-color: #286090;
+}
+
+.submitButton-customizable:disabled {
+  background-color: #a0c7e8;
+  cursor: not-allowed;
+}
+
+.errorMessage-customizable {
+  padding: 12px;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  width: 100%;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  border-radius: 6px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.redirect-customizable {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 14px;
+}
