@@ -36,7 +36,7 @@ const Dashboard = () => {
     localStorage.removeItem("access_token");
 
     // Redirect to Cognito's logout endpoint to clear the central session
-    window.location.href = `https://${VITE_COGNITO_DOMAIN}/logout?client_id=${VITE_COGNITO_CLIENT_ID}&logout_uri=${VITE_LOGOUT_URI}`;
+    window.location.href = "/";
   };
 
   // ... rest of the component is the same ...
