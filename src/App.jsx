@@ -8,7 +8,7 @@ import {
 import LoginPage from "./loginpage";
 import Dashboard from "./dashboard";
 import Callback from "./callback"; // We need this new component
-import "./login.css"; // Use your nice CSS
+import "./login.css"; // Use your nice CSSl
 
 function App() {
   return (
